@@ -30,8 +30,14 @@ namespace PregnancyBot
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                defaults: new { controller = "Messages", id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                    name: "PingCheck",
+            routeTemplate: "{controller}",
+                defaults: new { controller = "Default" }
+                );
         }
     }
 }
