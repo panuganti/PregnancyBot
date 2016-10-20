@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestGoogleDatastore", "..\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStorage", "..\CloudStorage\CloudStorage.csproj", "{CEC3D5D2-AAF1-4528-9CB8-C69C8E540BBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PregnancyLibrary", "..\PregnancyLibrary\PregnancyLibrary.csproj", "{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CEC3D5D2-AAF1-4528-9CB8-C69C8E540BBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEC3D5D2-AAF1-4528-9CB8-C69C8E540BBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEC3D5D2-AAF1-4528-9CB8-C69C8E540BBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
