@@ -87,11 +87,4 @@ namespace PregnancyLibrary
         }
         private readonly Datastore _store;
     }
-
-    /*
-     * Persistent Menu
-     * ===============
-     * curl -X POST -H "Content-Type: application/json" -d '{"setting_type" : "call_to_actions","thread_state" : "existing_thread","call_to_actions":[{"type":"postback","title":"TITLE1","payload":"action?action1"}, {"type":"postback","title":"TITLE2","payload":"action?action2"},{"type":"postback","title":"TITLE3","payload":"action?action3"}]}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token={YOUR ACCESS TOKEN}"
-     * curl -X DELETE -H "Content-Type: application/json" -d '{"setting_type":"call_to_actions","thread_state":"existing_thread"}' "https://graph.facebook.com/v2.6/me/thread_settings?access_token={YOUR ACCESS TOKEN}"
-    */
 }

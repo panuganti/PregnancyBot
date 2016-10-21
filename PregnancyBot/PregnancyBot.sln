@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStorage", "..\CloudSto
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PregnancyLibrary", "..\PregnancyLibrary\PregnancyLibrary.csproj", "{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersistentMenuHandler", "..\PersistentMenuHandler\PersistentMenuHandler.csproj", "{323DA70B-78DD-409B-9D9C-B946EB3F8242}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A54884A2-B8E5-49D1-90F6-7E82B935A0B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{323DA70B-78DD-409B-9D9C-B946EB3F8242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{323DA70B-78DD-409B-9D9C-B946EB3F8242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{323DA70B-78DD-409B-9D9C-B946EB3F8242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{323DA70B-78DD-409B-9D9C-B946EB3F8242}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
