@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
+using System.Net.Security;
 
 namespace PregnancyLibrary
 {
@@ -55,15 +57,23 @@ curl -X DELETE -H "Content-Type: application/json" -d '{
         {
             using (var client = new HttpClient())
             {
-                var requestUri = string.Format("https://graph.facebook.com/v2.6/me/thread_settings?access_token={0}", _accessToken);
-                client.DefaultRequestHeaders.Accept.Clear();
-
-                var menu = GetPersistentMenu();
-                string json = JsonConvert.SerializeObject(menu);
-                var response = await client.PostAsJsonAsync(requestUri, json);
-                if (!response.IsSuccessStatusCode)
+                try
                 {
-                    throw new Exception(response.ReasonPhrase);
+                    client.BaseAddress = new Uri("https://graph.facebook.com");
+                    var requestUri = string.Format("v2.6/me/thread_settings?access_token={0}", _accessToken);
+                    var menu = GetPersistentMenu();
+                    string json = JsonConvert.SerializeObject(menu, Formatting.Indented);
+                    HttpContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    System.Net.ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                    var response = await client.PostAsync(requestUri, content);
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new Exception(response.ReasonPhrase);
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
                 }
             }
         }
@@ -114,10 +124,13 @@ curl -X DELETE -H "Content-Type: application/json" -d '{
     public class PersistentMenu
     {
         [DataMember]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string setting_type { get; set; }
         [DataMember]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string thread_state { get; set; }
         [DataMember]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Call_To_Actions[] call_to_actions { get; set; }
     }
 
@@ -125,16 +138,22 @@ curl -X DELETE -H "Content-Type: application/json" -d '{
     public class Call_To_Actions
     {
         [DataMember]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string type { get; set; }
         [DataMember]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string title { get; set; }
         [DataMember]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string payload { get; set; }
         [DataMember]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string url { get; set; }
         [DataMember]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string webview_height_ratio { get; set; }
         [DataMember]
-        public bool messenger_extensions { get; set; }
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public bool? messenger_extensions { get; set; }
     }
 }

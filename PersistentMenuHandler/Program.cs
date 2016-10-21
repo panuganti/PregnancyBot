@@ -15,7 +15,7 @@ namespace PersistentMenuHandler
             PregnancyLibrary.PersistentMenuHandler.AddPersistentMenuAsync().Wait();
             // Delete
             Console.ReadKey();
-            PregnancyLibrary.PersistentMenuHandler.DeletePersistentMenuAsync().Wait();
+            //PregnancyLibrary.PersistentMenuHandler.DeletePersistentMenuAsync().Wait();
         }
     }
 }
