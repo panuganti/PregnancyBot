@@ -43,12 +43,17 @@ namespace PregnancyLibrary
         {
             var message = await argument; // Dummy just to enable async
             string userId = message.From.Id;
+            if (message.Text == "restart")
+            {
+                var deleted = await DeleteUserProfileAsync(userId);
+                context.Done(deleted); // TODO: Delete User Profile
+                return;
+            }
 
             #region First Time User
-            if (!(await _store.UserProfileExistsAsync(userId)))
+            if (!await _store.UserProfileExistsAsync(userId))
             {
                 context.Call(UserInfoForm.MakeRootDialog(), PostUserInfoForm);
-                //context.Call(new Introduction(), PostIntroduction);
             }
             #endregion First Time User
             // TODO: Detect User's intent from the message..
@@ -68,6 +73,11 @@ namespace PregnancyLibrary
             #endregion FAQs
         }
 
+        private async Task<bool> DeleteUserProfileAsync(string fbId)
+        {
+            return await _store.DeleteUserProfileAsync(fbId);
+        }
+
         /*
         private async Task PostIntroduction(IDialogContext context, IAwaitable<Introduction> result)
         {
@@ -82,6 +92,8 @@ namespace PregnancyLibrary
         {
             UserInfoForm userInfo = await result;
             // TODO: Store in Datastore
+            //await _store.InitUserProfile();
+
             //await context.PostAsync(string.Format("Stored LMP as {0}", userInfo.LastMenustralPeriod));
             context.Wait(MessageReceivedAsync);
         }

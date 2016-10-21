@@ -63,6 +63,20 @@ namespace PregnancyLibrary
             return JsonConvert.DeserializeObject<User>(json);
         }
 
+        public async Task<bool> DeleteUserProfileAsync(string fbId)
+        {
+            try
+            {
+                await _store.DeleteFileAsync(fbId, _profilesDir);
+                return true;
+            }
+            catch(Exception e)
+            {
+                // TODO: Log failure
+                return false;
+            }
+        }
+
         #endregion UserProfile
 
         #region 

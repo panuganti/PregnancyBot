@@ -145,6 +145,13 @@ namespace CloudStorage
             return children.Items.Any(c => c.Name == objectName);
         }
 
+        public async Task DeleteFileAsync(string filename, string dirName)
+        {
+            var objectName = String.Format("{0}/{1}/{2}", _rootDir, dirName, filename);
+            ObjectsResource.DeleteRequest request = _storageService.Objects.Delete(bucketName, objectName);
+            var str = await request.ExecuteAsync();
+        }
+
         public async Task<string> GetAllTextAsync(string filename, string dirName)
         {
             using (var stream = new MemoryStream())
