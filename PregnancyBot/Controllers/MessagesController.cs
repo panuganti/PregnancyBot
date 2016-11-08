@@ -62,6 +62,7 @@ namespace PregnancyBot
 
             return null;
         }
-        private readonly Datastore _store = Datastore.Instance;
+
+        private Datastore _store = Datastore.Instance;
     }
 }

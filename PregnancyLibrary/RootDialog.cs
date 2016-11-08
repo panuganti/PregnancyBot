@@ -8,6 +8,7 @@ namespace PregnancyLibrary
     [Serializable]
     public class RootDialog : IDialog<RootDialog>
     {
+        private Datastore _store;
         public RootDialog(Datastore store)
         {
             _store = store;
@@ -44,6 +45,7 @@ namespace PregnancyLibrary
             var message = await argument; // Dummy just to enable async
             string userId = message.From.Id;
 
+            
             #region First Time User
             if (!(await _store.UserProfileExistsAsync(userId)))
             {
@@ -51,21 +53,9 @@ namespace PregnancyLibrary
                 //context.Call(new Introduction(), PostIntroduction);
             }
             #endregion First Time User
+
             // TODO: Detect User's intent from the message..
-
-            #region Daily Vitals
-
-            #endregion Daily Vitals 
-
-            #region Daily Tips
-            // Also use Scheduler to send in the tips
-
-            #endregion Daily Tips
-
-
-            #region FAQs
-
-            #endregion FAQs
+            context.Wait(MessageReceivedAsync);
         }
 
         /*
@@ -85,6 +75,5 @@ namespace PregnancyLibrary
             //await context.PostAsync(string.Format("Stored LMP as {0}", userInfo.LastMenustralPeriod));
             context.Wait(MessageReceivedAsync);
         }
-        private readonly Datastore _store;
     }
 }
