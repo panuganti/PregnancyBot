@@ -24,7 +24,7 @@ namespace PregnancyBot
             if (activity.Type == ActivityTypes.Message)
             {
                 ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                    await Conversation.SendAsync(activity, () => new RootDialog(_store));
+                    await Conversation.SendAsync(activity, () => new RootDialog(_store, activity.From.Id));
             }
             else
             {
