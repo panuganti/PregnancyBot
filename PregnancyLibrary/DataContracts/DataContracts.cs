@@ -6,56 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PregnancyLibrary
-{
-    [DataContract]
-    public class User
-    {
-        [DataMember]
-        public string Id { get; set; }
-        [DataMember]
-        public DateTime StartTime { get; set; }
-        [DataMember]
-        public string Name { get; set; }
-        [DataMember]
-        public DateTime LMPDate { get; set; }
-    }
+{  
 
-    [DataContract]
-    public class BotToUserMilestones
-    {
-        [DataMember]
-        public BotToUserMilestonesTypes Type { get; set; }
-        [DataMember]
-        public string UserId { get; set; }
-        [DataMember]
-        public DateTime DateMilestoneRecorded { get; set; }
-    }
-
-    [DataContract]
-    public enum BotToUserMilestonesTypes
-    {
-        [EnumMember]
-        LMP,
-        [EnumMember]
-        Introduction
-    }
-
-    [DataContract]
-    public class Symptom
-    {
-        [DataMember]
-        public string name { get; set; }
-
-        [DataMember]
-        public Symptomtype type { get; set; }
-        [DataMember]
-        public string Text { get; set; }
-    }
-
-    public class Remainder
-    {
-        public DateTime AppointmentDate { get; set; }
-    }
 
     public enum Articles
     {
@@ -113,13 +65,7 @@ namespace PregnancyLibrary
      * Cannot See feet
      * Delivery
      */
-
-    public enum Symptomtype
-    {
-        Common,
-        Recent
-    }
-
+ 
     /*
     ken burnsken  * 
      * Vitals Info

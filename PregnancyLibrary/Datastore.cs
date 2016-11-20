@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Runtime.Serialization;
 using System.Net.Http;
+using PregnancyLibrary.DataContracts;
 
 namespace PregnancyLibrary
 {
@@ -28,9 +29,11 @@ namespace PregnancyLibrary
 
         string url = "http://localhost:54909";
 
-        #region UserProfile
+        /*
         private string _profilesDir = "profiles";
         private string _conversationStatusDir = "conversation";
+        */
+        #region Generics
 
         private async Task<bool> FileExistsAsync(string dirName, string filename)
         {
@@ -42,42 +45,22 @@ namespace PregnancyLibrary
             }
         }
 
-        public async Task<bool> UserProfileExistsAsync(string fbId)
-        {
-            return await FileExistsAsync(fbId, _userprofileFilename);
-        }
-
         private async Task<bool> StoreEntityAsync<T>(string dirName, string filename, T entity)
         {
             string serverPath = string.Format("{0}/user/StoreEntity/{1}/{2}", url, dirName, filename);
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.PostEntityAsync(serverPath, entity);
+                var response = await client.PostEntityAsync<T, bool>(serverPath, entity);
                 return true;
             }
         }
 
-        public async Task<bool> SaveUserProfile(string fbId, User user)
+        private async Task<T> GetFileAsync<T>(string fbId, string filename) where T:class
         {
-            return await StoreEntityAsync(fbId, _userprofileFilename, user);
-        }
-
-        public async Task<User> GetUserProfile(string fbId)
-        {
-            string serverPath = string.Format("{0}/user/GetUserProfile/{1}", url, fbId);
+            string serverPath = string.Format("{0}/user/GetEntity/{1}/{2}", url, fbId, filename);
             using (HttpClient client = new HttpClient())
             {
-                var response = await client.GetEntityAsync<User>(serverPath);
-                return response;
-            }
-        }
-
-        public async Task<HttpResponseMessage> DeleteUserProfileAsync(string fbId)
-        {
-            string serverPath = string.Format("{0}/user/DeleteDirectory/{1}", url, fbId);
-            using (HttpClient client = new HttpClient())
-            {
-                var response = await client.DeleteAsync(serverPath);
+                var response = await client.GetEntityAsync<T>(serverPath);
                 return response;
             }
         }
@@ -92,7 +75,33 @@ namespace PregnancyLibrary
             }
         }
 
-        #endregion UserProfile
+        public async Task<HttpResponseMessage> DeleteDirectoryAsync(string fbId)
+        {
+            string serverPath = string.Format("{0}/user/DeleteDirectory/{1}", url, fbId);
+            using (HttpClient client = new HttpClient())
+            {
+                var response = await client.DeleteAsync(serverPath);
+                return response;
+            }
+        }
+
+        #endregion Generics
+
+        #region UserProfile
+        public async Task<bool> SaveUserProfile(string fbId, User user)
+        {
+            return await StoreEntityAsync(fbId, _userprofileFilename, user);
+        }
+
+        public async Task<bool> UserProfileExistsAsync(string fbId)
+        {
+            return await FileExistsAsync(fbId, _userprofileFilename);
+        }
+
+        public async Task<User> GetUserProfileAsync(string fbId)
+        {
+            return await GetFileAsync<User>(fbId, _userprofileFilename);
+        }
 
         public async Task<bool> UpdateUserInfo(string fbId, BotToUserMilestones milestone)
         {
@@ -103,6 +112,17 @@ namespace PregnancyLibrary
             }
         }
 
+        #endregion UserProfile
+
+        #region Daily
+        public async Task<string> GetDailyTip()
+        {
+            return await GetFileAsync<string>(_dailyTipsFolder, "");
+        }
+
+        #endregion Daily
+
+        private string _dailyTipsFolder = "dailytips";
         private string _userprofileFilename = "userprofile";
 
     }

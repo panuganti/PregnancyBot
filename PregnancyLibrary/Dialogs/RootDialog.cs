@@ -1,5 +1,6 @@
 ﻿using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using PregnancyLibrary.DataContracts;
 using System;
 using System.Threading.Tasks;
 
@@ -27,29 +28,70 @@ namespace PregnancyLibrary
 
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
-            var message = await argument; // Dummy just to enable async
+            IMessageActivity message = await argument; // Dummy just to enable async
             string userId = message.From.Id;
             
             #region First Time User
             if (!(await _store.UserProfileExistsAsync(userId)))
             {
+                await SendIntroductionMessages(context, message);
                 context.Call(UserInfoForm.MakeRootDialog(), PostUserInfoForm);
                 return;
-                //context.Call(new Introduction(), PostIntroduction);
             }
             #endregion First Time User
+            await context.PostAsync(string.Format("User profile exists")); // TODO: Delete
 
+            // Today's vitals
+            PromptDialog.Confirm(context, AfterResetAsync, "Would you like to enter your vitals now?",
+                                                        "Didn't get that!", promptStyle: PromptStyle.None);
             // TODO: Detect User's intent from the message..
             context.Wait(MessageReceivedAsync);
+        }
+
+        // TODO:
+        public async Task AfterResetAsync(IDialogContext context, IAwaitable<bool> argument)
+        {
+            var confirm = await argument;
+            if (confirm)
+            {
+                await context.PostAsync("Moving to Vitals Dialog.");
+                context.Call<DailyDialog>(new DailyDialog(_store, _userId),AfterVitalsAsync);
+                return;
+            }
+            else
+            {
+                await context.PostAsync("Staying in Root Dialog");
+            }
+            context.Wait(MessageReceivedAsync);
+        }
+
+        public async Task AfterVitalsAsync(IDialogContext context, IAwaitable<DailyDialog> result)
+        {
+            await context.PostAsync("Vitals Completed. Back to Root Dialog");
+            context.Wait(MessageReceivedAsync);
+        }
+
+        private async Task SendIntroductionMessages(IDialogContext context, IMessageActivity message)
+        {
+            await context.PostAsync(string.Format("Hi {0} :), My name is Emma. I'll be your friend during your pregnancy.", message.From.Name));
+            await context.PostAsync(string.Format("I'll help you track all the vital information and will try to answer any questions you might have."));
         }
 
         private async Task PostUserInfoForm(IDialogContext context, IAwaitable<UserInfoForm> result)
         {
             UserInfoForm userInfo = await result;
-            var user = await _store.GetUserProfile(_userId);
+            
+            var user = await _store.GetUserProfileAsync(_userId);
+            if (user == null)
+            {
+                user = new User();
+                user.Id = _userId;
+                user.StartTime = DateTime.Now;
+            }
             user.LMPDate = userInfo.LastMenustralPeriod;
             var succ = await _store.SaveUserProfile(_userId, user);
             await context.PostAsync(string.Format("Stored LMP as {0}", userInfo.LastMenustralPeriod));
+            // TODO: Record milestone
             context.Wait(MessageReceivedAsync);
         }
 
